@@ -28,11 +28,14 @@ namespace SOPD
             if (!RoleManager.RoleExists("Administrator"))
             {  
                 var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
-                role.Name = "Admin";
+                role.Name = "Administrator";
                 RoleManager.Create(role);                  
 
                 var user = new User();
                 user.UserName = "Piotr_Skrzypa";
+                user.FirstName = "Piotr";
+                user.LastName = "Skrzypa";
+                user.PhoneNumber = "789456132";
                 user.Email = "testowy@gmail.com";
 
                 string userPWD = "TestoweHasło1";
@@ -41,7 +44,7 @@ namespace SOPD
  
                 if (chkUser.Succeeded)
                 {
-                    var result1 = UserManager.AddToRole(user.Id, "Admin");
+                    var result1 = UserManager.AddToRole(user.Id, "Administrator");
                 }
             }
   

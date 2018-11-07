@@ -1,0 +1,78 @@
+﻿@model SOPD.Models.EditAccountViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NewUser.OrganizationalUnit.UnitName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewUser.OrganizationalUnit.UnitName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewUser.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewUser.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewUser.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewUser.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewUser.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewUser.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NewUser.PhoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewUser.PhoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewUser.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NewUser.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NewUser.Roles)
+        </dt>
+            @foreach(var r in Model.RolesNames)
+            {
+                <dd>
+                    @Html.Label("*") @r
+                </dd>
+
+            }
+     
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.NewUser.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SOPD.Models
@@ -76,13 +77,14 @@ namespace SOPD.Models
         public string UserName { get; set; }
 
         [Required]
-        [Display(Name = "Rola użytkownika")]
-        public RoleName Role { get; set; }
-
-        [Required]
         [EmailAddress]
         [Display(Name = "Adres e-mail")]
         public string Email { get; set; }
+
+        [Required]
+        [Phone]
+        [Display(Name = "Numer telefonu")]
+        public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej następującą liczbę znaków: {2}.", MinimumLength = 6)]
@@ -94,6 +96,37 @@ namespace SOPD.Models
         [Display(Name = "Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Hasło i jego potwierdzenie są niezgodne.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class CreateAccountViewModel
+    {
+        public User NewUser { get; set; }
+        
+        public List<IdentityRole> AllRoles { get; set; }
+        [Required]
+        [Display(Name = "Uprawnienia użytkownika")]
+        public List<string> RolesNames { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} musi zawierać co najmniej następującą liczbę znaków: {2}.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Hasło")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Potwierdź hasło")]
+        [Compare("Password", ErrorMessage = "Hasło i jego potwierdzenie są niezgodne.")]
+        public string ConfirmPassword { get; set; }
+    }
+
+    public class EditAccountViewModel
+    {
+        public User NewUser { get; set; }
+
+        public List<IdentityRole> AllRoles { get; set; }
+        [Required]
+        [Display(Name = "Uprawnienia użytkownika")]
+        public List<string> RolesNames { get; set; }
     }
 
     public class ResetPasswordViewModel

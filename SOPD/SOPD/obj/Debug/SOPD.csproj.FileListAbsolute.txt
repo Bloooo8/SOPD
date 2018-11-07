@@ -91,3 +91,7 @@ C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Deb
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.ThesisAndReview.resources
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.RolesAndUnits.resources
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.RolesConfiguration.resources
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.RolesCorrection.resources
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.ForeignKeys.resources
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.ReviewAuthor.resources
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.ChangedValidation.resources

@@ -168,6 +168,7 @@ namespace SOPD.Controllers
                 var user = new User {
                     UserName = model.UserName,
                     Email = model.Email,
+                    PhoneNumber=model.PhoneNumber,
                     FirstName=model.FirstName,
                     LastName=model.LastName,
                     };
@@ -175,7 +176,7 @@ namespace SOPD.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    UserManager.AddToRole(user.Id, model.Role.ToString());
+                    UserManager.AddToRole(user.Id, "Dyplomant");
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // Aby uzyskać więcej informacji o sposobie włączania potwierdzania konta i resetowaniu hasła, odwiedź stronę https://go.microsoft.com/fwlink/?LinkID=320771

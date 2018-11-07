@@ -1,0 +1,121 @@
+﻿@model SOPD.Models.Thesis
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Thesis</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Author.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrganizationalUnit.UnitName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrganizationalUnit.UnitName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Promoter.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Promoter.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Reviewer.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Reviewer.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnglishTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnglishTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Abstract)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Abstract)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnglishAbstract)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnglishAbstract)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ApprovalDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovalDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.KeyWords)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KeyWords)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnglishKeyWords)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnglishKeyWords)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.State)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.State)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

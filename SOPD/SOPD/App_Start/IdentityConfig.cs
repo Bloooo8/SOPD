@@ -120,8 +120,4 @@ namespace SOPD
         }
     }
 
-    public class MyRoleManager:IdentityRole
-    {
-
-    }
 }
