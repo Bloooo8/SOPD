@@ -121,6 +121,7 @@ namespace SOPD.Controllers
             }
         }
         // GET: Users/Edit/5
+        [AdminAuth]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -157,6 +158,7 @@ namespace SOPD.Controllers
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [AdminAuth]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(EditAccountViewModel model)
         {
@@ -177,6 +179,7 @@ namespace SOPD.Controllers
         }
 
         // GET: Users/Delete/5
+        [AdminAuth]
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -194,6 +197,7 @@ namespace SOPD.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AdminAuth]
         public ActionResult DeleteConfirmed(string id)
         {
             User user = db.Users.Find(id);

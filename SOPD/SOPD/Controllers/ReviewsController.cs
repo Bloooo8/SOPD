@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SOPD.Models;
+using SOPD.Infrastructure;
+using Microsoft.AspNet.Identity;
 
 namespace SOPD.Controllers
 {
@@ -37,10 +39,11 @@ namespace SOPD.Controllers
         }
 
         // GET: Reviews/Create
-        public ActionResult Create()
+        [PromoterAuth]
+        public ActionResult Create(int thesisId)
         {
-            ViewBag.UserID = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.ThesisID = new SelectList(db.Theses, "ThesisID", "Title");
+            ViewBag.AuthorID = User.Identity.GetUserId();
+            ViewBag.ThesisID =thesisId ;
             return View();
         }
 
@@ -49,6 +52,7 @@ namespace SOPD.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [PromoterAuth]
         public ActionResult Create([Bind(Include = "ReviewID,Content,ThesisID,UserID")] Review review)
         {
             if (ModelState.IsValid)

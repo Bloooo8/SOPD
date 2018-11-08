@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SOPD.Models;
+using SOPD.Infrastructure;
 
 namespace SOPD.Controllers
 {
@@ -37,12 +38,13 @@ namespace SOPD.Controllers
         }
 
         // GET: Theses/Create
+        [Authorize(Roles="Promotor,Dyplomant")]
         public ActionResult Create()
         {
-            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FullName");
             ViewBag.OrganizationalUnitID = new SelectList(db.OrganizationalUnits, "OrganizationalUnitID", "UnitName");
-            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FirstName");
-            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FirstName");
+            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FullName");
+            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FullName");
             return View();
         }
 
@@ -51,6 +53,7 @@ namespace SOPD.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ThesisAuth]
         public ActionResult Create([Bind(Include = "ThesisID,Title,EnglishTitle,Abstract,EnglishAbstract,ApprovalDate,KeyWords,EnglishKeyWords,State,PromoterID,AuthorID,OrganizationalUnitID,ReviewerID")] Thesis thesis)
         {
             if (ModelState.IsValid)
@@ -60,14 +63,15 @@ namespace SOPD.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FirstName", thesis.AuthorID);
+            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FullName", thesis.AuthorID);
             ViewBag.OrganizationalUnitID = new SelectList(db.OrganizationalUnits, "OrganizationalUnitID", "UnitName", thesis.OrganizationalUnitID);
-            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FirstName", thesis.PromoterID);
-            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FirstName", thesis.ReviewerID);
+            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FullName", thesis.PromoterID);
+            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FullName", thesis.ReviewerID);
             return View(thesis);
         }
 
         // GET: Theses/Edit/5
+        [ThesisAuth]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -79,10 +83,10 @@ namespace SOPD.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FirstName", thesis.AuthorID);
+            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FullName", thesis.AuthorID);
             ViewBag.OrganizationalUnitID = new SelectList(db.OrganizationalUnits, "OrganizationalUnitID", "UnitName", thesis.OrganizationalUnitID);
-            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FirstName", thesis.PromoterID);
-            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FirstName", thesis.ReviewerID);
+            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FullName", thesis.PromoterID);
+            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FullName", thesis.ReviewerID);
             return View(thesis);
         }
 
@@ -91,6 +95,7 @@ namespace SOPD.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ThesisAuth]
         public ActionResult Edit([Bind(Include = "ThesisID,Title,EnglishTitle,Abstract,EnglishAbstract,ApprovalDate,KeyWords,EnglishKeyWords,State,PromoterID,AuthorID,OrganizationalUnitID,ReviewerID")] Thesis thesis)
         {
             if (ModelState.IsValid)
@@ -99,14 +104,15 @@ namespace SOPD.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FirstName", thesis.AuthorID);
+            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FullName", thesis.AuthorID);
             ViewBag.OrganizationalUnitID = new SelectList(db.OrganizationalUnits, "OrganizationalUnitID", "UnitName", thesis.OrganizationalUnitID);
-            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FirstName", thesis.PromoterID);
-            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FirstName", thesis.ReviewerID);
+            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FullName", thesis.PromoterID);
+            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FullName", thesis.ReviewerID);
             return View(thesis);
         }
 
         // GET: Theses/Delete/5
+        [AdminAuth]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -124,6 +130,7 @@ namespace SOPD.Controllers
         // POST: Theses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AdminAuth]
         public ActionResult DeleteConfirmed(int id)
         {
             Thesis thesis = db.Theses.Find(id);

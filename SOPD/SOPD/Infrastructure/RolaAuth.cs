@@ -33,7 +33,7 @@ namespace SOPD.Infrastructure
         {
             if (context.Result == null)
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" } });
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
             }
         }
     }
@@ -61,7 +61,7 @@ namespace SOPD.Infrastructure
         {
             if (context.Result == null)
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" } });
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
             }
         }
     }
@@ -89,7 +89,7 @@ namespace SOPD.Infrastructure
         {
             if (context.Result == null)
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" } });
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
             }
         }
     }
@@ -117,7 +117,7 @@ namespace SOPD.Infrastructure
         {
             if (context.Result == null)
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" } });
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
             }
         }
     }
@@ -145,7 +145,7 @@ namespace SOPD.Infrastructure
         {
             if (context.Result == null)
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" } });
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
             }
         }
     }
@@ -173,7 +173,35 @@ namespace SOPD.Infrastructure
         {
             if (context.Result == null)
             {
-                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Login" }, { "controller", "Account" } });
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
+            }
+        }
+    }
+
+    public class ThesisAuthAttribute : FilterAttribute, IAuthenticationFilter
+    {
+        public void OnAuthentication(AuthenticationContext context)
+        {
+            if (context.HttpContext.User.Identity.IsAuthenticated)
+            {
+                var isStudent = context.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().IsInRole(context.HttpContext.User.Identity.GetUserId(), "Dyplomant");
+                var isPromoter = context.HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().IsInRole(context.HttpContext.User.Identity.GetUserId(), "Promotor");
+                if (!isStudent&&!isPromoter)
+                {
+                    context.Result = new HttpUnauthorizedResult();
+                }
+            }
+            else
+            {
+                context.Result = new HttpUnauthorizedResult();
+            }
+        }
+
+        public void OnAuthenticationChallenge(AuthenticationChallengeContext context)
+        {
+            if (context.Result == null)
+            {
+                context.Result = new RedirectToRouteResult(new RouteValueDictionary { { "action", "Index" }, { "controller", "Home" } });
             }
         }
     }

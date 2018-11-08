@@ -12,11 +12,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Author.FirstName)
+            @Html.DisplayNameFor(model => model.Author.FullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Author.FirstName)
+            @Html.DisplayFor(model => model.Author.FullName)
         </dd>
 
         <dt>
@@ -28,19 +28,19 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Promoter.FirstName)
+            @Html.DisplayNameFor(model => model.Promoter.FullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Promoter.FirstName)
+            @Html.DisplayFor(model => model.Promoter.FullName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Reviewer.FirstName)
+            @Html.DisplayNameFor(model => model.Reviewer.FullName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Reviewer.FirstName)
+            @Html.DisplayFor(model => model.Reviewer.FullName)
         </dd>
 
         <dt>
@@ -111,5 +111,6 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ThesisID }) |
+    @Html.ActionLink("Stwórz recenzję", "Create", "Reviews",new { thesisId = Model.ThesisID},null) |
     @Html.ActionLink("Back to List", "Index")
 </p>

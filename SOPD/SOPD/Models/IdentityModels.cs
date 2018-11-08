@@ -37,6 +37,13 @@ namespace SOPD.Models
         [ForeignKey("OrganizationalUnit")]
         public int? OrganizationalUnitID { get; set; }
 
+        public string FullName {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+
         public virtual OrganizationalUnit OrganizationalUnit { get; set; }
 
 
