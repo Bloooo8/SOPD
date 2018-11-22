@@ -206,6 +206,21 @@ namespace SOPD.Controllers
             return RedirectToAction("Index");
         }
 
+        public static List<User> GetPromotors(ApplicationDbContext db)
+        {
+            string roleID = db.Roles.First(r=>r.Name=="Promotor").Id;
+            var users = db.Users.Include(u => u.Roles).Where(u=>u.Roles.Any(r=>r.RoleId==roleID));
+
+            return users.ToList();
+        }
+        public static List<User> GetReviewers(ApplicationDbContext db)
+        {
+            string roleID = db.Roles.First(r => r.Name == "Recenzent").Id;
+            var users = db.Users.Include(u => u.Roles).Where(u => u.Roles.Any(r => r.RoleId == roleID));
+
+            return users.ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

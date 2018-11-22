@@ -74,12 +74,16 @@
 
 <p>
     @if (User.Identity.IsAuthenticated)
-            {
-                if (User.IsInRole("Administrator"))
-                {
-            @Html.ActionLink("Edit", "Edit", new { id = Model.NewUser.Id }) 
+    {
+        if (User.IsInRole("Administrator"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.NewUser.Id })
+        }
+        if (User.IsInRole("Dyplomant"))
+        {
+            @Html.ActionLink("Dodaj propozycję tematu", "CreateProposition", "Theses", new { id = Model.NewUser.Id },null)
         }
     }
-    
+
     @Html.ActionLink("Back to List", "Index")
 </p>

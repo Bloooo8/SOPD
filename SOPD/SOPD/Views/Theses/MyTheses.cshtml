@@ -1,0 +1,138 @@
+﻿@model IEnumerable<IEnumerable<SOPD.Models.Thesis>>
+@{
+    ViewBag.Title = "MyTheses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MyTheses</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).AuthorID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).OrganizationalUnitID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).PromoterID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).ReviewerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ElementAt(0).Title)
+        </th>
+
+        <th></th>
+    </tr>
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Dyplomant") && Model.ElementAt(0).Count()>0)
+        {
+            <tr><td></td><td></td><td><b>Autor</b></td><td></td><td></td><td></td></tr>
+        }
+    }
+
+    @foreach (var item in Model.ElementAt(0))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationalUnit.UnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Promoter.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reviewer.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.ThesisID })
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Dyplomant"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ThesisID })
+                    }
+                }
+            </td>
+        </tr>
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Promotor") && Model.ElementAt(1).Count() > 0)
+        {
+            <tr><td></td><td></td><td><b>Promotor</b></td><td></td><td></td><td></td></tr>
+        }
+    }
+    @foreach (var item in Model.ElementAt(1))
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationalUnit.UnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Promoter.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reviewer.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.ThesisID })
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Promotor"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ThesisID })
+                    }
+                }
+            </td>
+        </tr>
+    }
+    @if (User.Identity.IsAuthenticated)
+    {
+        if (User.IsInRole("Recenzent") && Model.ElementAt(2).Count() > 0)
+        {
+            <tr><td></td><td></td><td><b>Recenzent</b></td><td></td><td></td><td></td></tr>
+        }
+    }
+            @foreach (var item in Model.ElementAt(2))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Author.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrganizationalUnit.UnitName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Promoter.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reviewer.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.ThesisID })
+                    </td>
+                </tr>
+            }
+
+        </table>
+

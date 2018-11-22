@@ -13,16 +13,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Author.FullName)
+            @Html.DisplayNameFor(model => model.AuthorID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OrganizationalUnit.UnitName)
+            @Html.DisplayNameFor(model => model.OrganizationalUnitID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Promoter.FullName)
+            @Html.DisplayNameFor(model => model.PromoterID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Reviewer.FullName)
+            @Html.DisplayNameFor(model => model.ReviewerID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
@@ -49,9 +49,19 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ThesisID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ThesisID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ThesisID })
+            @Html.ActionLink("Details", "Details", new { id = item.ThesisID })
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Administrator"))
+                {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ThesisID })
+                }
+                if (User.IsInRole("Dziekan")&&item.State==SOPD.Models.ThesisState.UnApproved)
+                {
+                    @Html.ActionLink("Zatwierdź temat", "ApproveThesis", new { id = item.ThesisID })
+                }
+            }
         </td>
     </tr>
 }

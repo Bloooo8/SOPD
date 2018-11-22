@@ -82,7 +82,6 @@ C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\pl\
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\pl\Microsoft.Owin.Security.Google.resources.dll
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\pl\Microsoft.Owin.Security.Twitter.resources.dll
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\pl\Microsoft.Owin.Security.MicrosoftAccount.resources.dll
-C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.csprojResolveAssemblyReference.cache
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.csproj.CoreCompileInputs.cache
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.dll
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.pdb
@@ -95,3 +94,5 @@ C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Deb
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.ForeignKeys.resources
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.ReviewAuthor.resources
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.Migrations.ChangedValidation.resources
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.csprojAssemblyReference.cache
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\obj\Debug\SOPD.csproj.CopyComplete
