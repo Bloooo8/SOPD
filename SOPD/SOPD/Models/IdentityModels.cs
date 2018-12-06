@@ -35,6 +35,7 @@ namespace SOPD.Models
         public override string PhoneNumber { get; set; }
 
         [ForeignKey("OrganizationalUnit")]
+        [Display(Name = "Jednostka organizacyjna")]
         public int? OrganizationalUnitID { get; set; }
 
         public string FullName {

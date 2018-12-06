@@ -1,0 +1,45 @@
+﻿@model SOPD.Models.Thesis
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karta wyboru tematu pracy dyplomowej</title>
+@Styles.Render("~/Content/css")
+@Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div>
+        <p class="table_bordered-title">Karta wyboru tematu pracy dyplomowej</p>
+        <table class="table-bordered" align="center">
+            <tbody>
+                <tr>
+                    <th scope="row">Tytuł</th>
+                    <td>@Model.Title</td>
+                </tr>
+                <tr>
+                    <th scope="row">Autor</th>
+                    <td>@Model.Author.FullName</td>
+                </tr>
+                <tr>
+                    <th scope="row">Opiekun pracy</th>
+                    <td>@Model.Promoter.FullName</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><div align="left">Podpis Opiekuna</div>
+    <div align="right">Podpis Dyplomanta</div></p>
+    <p><div align="left">........................</div>
+    <div align="right">........................</div></p>
+
+</body>
+</html>

@@ -20,10 +20,17 @@ namespace SOPD.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Users
+        [AdminAuth]
         public ActionResult Index()
         {
             var users = db.Users.Include(u => u.OrganizationalUnit);
             return View(users.ToList());
+        }
+
+        public ActionResult Promoters()
+        {
+            var users = GetPromotors(db);
+            return View("Index",users.ToList());
         }
 
         // GET: Users/Details/5
@@ -38,6 +45,9 @@ namespace SOPD.Controllers
             {
                 return HttpNotFound();
             }
+            string promoterRoleID = db.Roles.First(r => r.Name == "Promotor").Id;
+            ViewBag.isPromoter =user.Roles.Any(r => r.RoleId == promoterRoleID);
+            
             List<string> rolesIDs = user.Roles.Select(r => r.RoleId).ToList();
             List<IdentityRole> allRoles = db.Roles.ToList();
             List<string> rolesNames = new List<string>();

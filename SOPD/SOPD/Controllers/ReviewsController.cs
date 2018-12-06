@@ -16,12 +16,7 @@ namespace SOPD.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Reviews
-        public ActionResult Index()
-        {
-            var reviews = db.Reviews.Include(r => r.Author).Include(r => r.Thesis);
-            return View(reviews.ToList());
-        }
+     
 
         // GET: Reviews/Details/5
         public ActionResult Details(int? id)
@@ -35,11 +30,12 @@ namespace SOPD.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.canReview = review.UserID == User.Identity.GetUserId();
             return View(review);
         }
 
         // GET: Reviews/Create
-        [PromoterAuth]
+        [ReviewerAuth]
         public ActionResult Create(int thesisId)
         {
             ViewBag.AuthorID = User.Identity.GetUserId();
@@ -52,14 +48,14 @@ namespace SOPD.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [PromoterAuth]
+        [ReviewerAuth]
         public ActionResult Create([Bind(Include = "ReviewID,Content,ThesisID,UserID")] Review review)
         {
             if (ModelState.IsValid)
             {
                 db.Reviews.Add(review);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details","Theses",new { id=review.ThesisID });
             }
 
             ViewBag.UserID = new SelectList(db.Users, "Id", "FirstName", review.UserID);
@@ -79,8 +75,7 @@ namespace SOPD.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserID = new SelectList(db.Users, "Id", "FirstName", review.UserID);
-            ViewBag.ThesisID = new SelectList(db.Theses, "ThesisID", "Title", review.ThesisID);
+
             return View(review);
         }
 
@@ -95,7 +90,7 @@ namespace SOPD.Controllers
             {
                 db.Entry(review).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Theses", new { id = review.ThesisID });
             }
             ViewBag.UserID = new SelectList(db.Users, "Id", "FirstName", review.UserID);
             ViewBag.ThesisID = new SelectList(db.Theses, "ThesisID", "Title", review.ThesisID);

@@ -9,6 +9,11 @@ using System.Web.Mvc;
 using SOPD.Models;
 using SOPD.Infrastructure;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
+using System.Net.Mail;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using RotativaHQ.MVC5;
 
 namespace SOPD.Controllers
 {
@@ -35,7 +40,43 @@ namespace SOPD.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.reviewExists = thesis.Reviews.Count != 0;
+            ViewBag.CanReview = thesis.Reviews.Count == 0 && thesis.ReviewerID == User.Identity.GetUserId();
+            ViewBag.CanApproveProposition = thesis.State == ThesisState.Proposition && thesis.PromoterID == User.Identity.GetUserId();
+            ViewBag.isPromoter= thesis.PromoterID == User.Identity.GetUserId();
             return View(thesis);
+        }
+        [PromoterAuth]
+        public ActionResult Propositions()
+        {
+            var id = User.Identity.GetUserId();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var thesis = db.Theses.Where(t => t.State == ThesisState.Proposition && t.PromoterID == id).ToList();
+            if (thesis == null)
+            {
+                return HttpNotFound();
+            }
+            return View("Index", thesis);
+        }
+        [ReviewerAuth]
+        public ActionResult WaitingForReview()
+        {
+            var id = User.Identity.GetUserId();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var thesis = db.Theses.Where(t => t.Reviews.Count == 0 && t.ReviewerID == id).ToList();
+            if (thesis == null)
+            {
+                return HttpNotFound();
+            }
+            return View("Index", thesis);
         }
 
         public ActionResult MyTheses()
@@ -43,13 +84,13 @@ namespace SOPD.Controllers
             var userId = User.Identity.GetUserId();
             if (userId == null)
             {
-                return RedirectToAction("Login", "Account");           
+                return RedirectToAction("Login", "Account");
             }
-            List<List<Thesis>> viewModel =new List<List<Thesis>>();
-            viewModel.Add(db.Theses.Where(t=>t.AuthorID==userId).ToList());
+            List<List<Thesis>> viewModel = new List<List<Thesis>>();
+            viewModel.Add(db.Theses.Where(t => t.AuthorID == userId).ToList());
             viewModel.Add(db.Theses.Where(t => t.PromoterID == userId).ToList());
             viewModel.Add(db.Theses.Where(t => t.ReviewerID == userId).ToList());
-            if (viewModel.Count==0)
+            if (viewModel.Count == 0)
             {
                 return HttpNotFound();
             }
@@ -57,7 +98,7 @@ namespace SOPD.Controllers
         }
 
         // GET: Theses/Create
-        [Authorize(Roles="Promotor,Dyplomant")]
+        [ThesisAuth]
         public ActionResult Create()
         {
             ViewBag.AuthorID = new SelectList(db.Users, "Id", "FullName");
@@ -66,7 +107,7 @@ namespace SOPD.Controllers
             ViewBag.ReviewerID = new SelectList(UsersController.GetReviewers(db), "Id", "FullName");
             return View();
         }
-     
+
 
         // POST: Theses/Create
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
@@ -76,7 +117,7 @@ namespace SOPD.Controllers
         [ThesisAuth]
         public ActionResult Create([Bind(Include = "ThesisID,Title,EnglishTitle,Abstract,EnglishAbstract,ApprovalDate,KeyWords,EnglishKeyWords,State,PromoterID,AuthorID,OrganizationalUnitID,ReviewerID")] Thesis thesis)
         {
-            
+
             if (ModelState.IsValid)
             {
                 if (User.IsInRole("Dyplomant"))
@@ -93,10 +134,8 @@ namespace SOPD.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            
-            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FullName", thesis.AuthorID);
+
             ViewBag.OrganizationalUnitID = new SelectList(db.OrganizationalUnits, "OrganizationalUnitID", "UnitName", thesis.OrganizationalUnitID);
-            ViewBag.PromoterID = new SelectList(UsersController.GetPromotors(db), "Id", "FullName", thesis.PromoterID);
             ViewBag.ReviewerID = new SelectList(UsersController.GetReviewers(db), "Id", "FullName", thesis.ReviewerID);
             return View(thesis);
         }
@@ -129,8 +168,10 @@ namespace SOPD.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.CanEdit = thesis.AuthorID == User.Identity.GetUserId() && thesis.PromoterID == User.Identity.GetUserId();
-            if (!ViewBag.CanEdit)
+            ViewBag.ReviewerID = new SelectList(UsersController.GetReviewers(db), "Id", "FullName", thesis.ReviewerID);
+            bool isPromoter = thesis.PromoterID == User.Identity.GetUserId();
+            bool canEdit = thesis.AuthorID == User.Identity.GetUserId() || thesis.PromoterID == User.Identity.GetUserId();
+            if (!canEdit)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -151,10 +192,7 @@ namespace SOPD.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AuthorID = new SelectList(db.Users, "Id", "FullName", thesis.AuthorID);
-            ViewBag.OrganizationalUnitID = new SelectList(db.OrganizationalUnits, "OrganizationalUnitID", "UnitName", thesis.OrganizationalUnitID);
-            ViewBag.PromoterID = new SelectList(db.Users, "Id", "FullName", thesis.PromoterID);
-            ViewBag.ReviewerID = new SelectList(db.Users, "Id", "FullName", thesis.ReviewerID);
+            ViewBag.ReviewerID = new SelectList(UsersController.GetReviewers(db), "Id", "FullName", thesis.ReviewerID);
             return View(thesis);
         }
 
@@ -194,7 +232,7 @@ namespace SOPD.Controllers
                 return RedirectToAction("Login", "Account");
             }
             var theses = db.Theses.Where(t => t.State == ThesisState.UnApproved);
-            return View("Index",theses.ToList());
+            return View("Index", theses.ToList());
         }
         [DeanAuth]
         public ActionResult ApproveThesis(int? id)
@@ -211,7 +249,25 @@ namespace SOPD.Controllers
             thesis.State = ThesisState.Approved;
             thesis.ApprovalDate = DateTime.Now;
             db.SaveChanges();
-            return View("Details",thesis);
+            return View("Details", thesis);
+
+        }
+        [PromoterAuth]
+        public async Task<ActionResult> ApproveProposition(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Thesis thesis = db.Theses.Find(id);
+            if (thesis == null || thesis.PromoterID != User.Identity.GetUserId())
+            {
+                return HttpNotFound();
+            }
+            thesis.State = ThesisState.UnApproved;
+            db.SaveChanges();
+            await ApproveEmail(thesis);
+            return View("Details", thesis);
 
         }
         protected override void Dispose(bool disposing)
@@ -221,6 +277,47 @@ namespace SOPD.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ApproveEmail(Thesis model)
+        {
+
+            if (model == null)
+            {
+                return RedirectToAction("Details");
+            }
+            var apiKey = System.Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+            var client = new SendGridClient(apiKey);
+            var body = "\t \t \t \t Powiadomienie SOPD! \n \t Praca o tytule: {0} zmieniła status z \"Propozycja\" na \"Niezatwierdzona\"";
+            var message = new SendGridMessage();
+            var from = new EmailAddress("skrzypapiotr144@gmail.com", "System obsługi prac dyplomowych");
+            message.SetFrom(from);
+            var to = new EmailAddress(model.Author.Email, model.Author.FullName);
+            message.AddTo(to);
+            message.SetSubject("Zmiana statusu tematu pracy");
+            message.AddContent(MimeType.Text, string.Format(body, model.Title));
+            var response = await client.SendEmailAsync(message);
+            return RedirectToAction("Details");
+        }
+
+
+        [PromoterAuth]
+        public ActionResult GeneratePDF(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Thesis thesis = db.Theses.Find(id);
+            if (thesis == null)
+            {
+                return HttpNotFound();
+            }            
+            string footer = "--footer-right \"Date: [date] [time]\" " + "--footer-center \"Page: [page] of [toPage]\" --footer-line --footer-font-size \"9\" --footer-spacing 5 --footer-font-name \"calibri light\"";
+            return new ViewAsPdf(thesis) { FileName = "TestViewAsPdf.pdf",
+                                                          CustomSwitches=footer};
         }
     }
 }
