@@ -30,10 +30,12 @@ namespace SOPD.Controllers
             return View(users.ToPagedList(pageNumber,pageSize));
         }
 
-        public ActionResult Promoters()
+        public ActionResult Promoters(int? page)
         {
+            int pageNumber = page ?? 1;
+            int pageSize = 5;
             var users = GetPromotors(db);
-            return View("Index",users.ToList());
+            return View("Index",users.ToPagedList(pageNumber,pageSize));
         }
 
         // GET: Users/Details/5

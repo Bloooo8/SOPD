@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="SOPD" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Piotrek\\Desktop\\Nowy\\Sem\ 9\\Aplikacje\ Internetowe\\SOPD\\SOPD\\SOPD\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\Piotrek\\Desktop\\Nowy\\Sem\ 9\\Aplikacje\ Internetowe\\SOPD\\SOPD\\SOPD\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Data Source=tcp:sopddbserver.database.windows.net,1433;Initial Catalog=PS_SOPD_db;User Id=sopdpsadmin@sopddbserver;Password=iOSsucks007" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Piotrek\\Desktop\\Nowy\\Sem\ 9\\Aplikacje\ Internetowe\\SOPD\\SOPD\\SOPD\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>
