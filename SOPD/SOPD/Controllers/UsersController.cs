@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
 using SOPD.Infrastructure;
+using PagedList;
 
 namespace SOPD.Controllers
 {
@@ -21,10 +22,12 @@ namespace SOPD.Controllers
 
         // GET: Users
         [AdminAuth]
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var users = db.Users.Include(u => u.OrganizationalUnit);
-            return View(users.ToList());
+            int pageNumber = page ?? 1;
+            int pageSize = 5;
+            var users = db.Users.Include(u => u.OrganizationalUnit).OrderBy(u=>u.LastName);
+            return View(users.ToPagedList(pageNumber,pageSize));
         }
 
         public ActionResult Promoters()

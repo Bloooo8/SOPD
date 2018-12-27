@@ -4,16 +4,16 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SOPD.Models;
 using SOPD.Infrastructure;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
-using System.Net.Mail;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using RotativaHQ.MVC5;
+using PagedList;
+
 
 namespace SOPD.Controllers
 {
@@ -22,10 +22,12 @@ namespace SOPD.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Theses
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var theses = db.Theses.Include(t => t.Author).Include(t => t.OrganizationalUnit).Include(t => t.Promoter).Include(t => t.Reviewer);
-            return View(theses.ToList());
+            int pageNumber = page ?? 1;
+            int pageSize = 3;
+            var theses = db.Theses.Include(t => t.Author).Include(t => t.OrganizationalUnit).Include(t => t.Promoter).Include(t => t.Reviewer).OrderBy(t=>t.Title);
+            return View(theses.ToPagedList(pageNumber,pageSize));
         }
 
         // GET: Theses/Details/5
@@ -47,15 +49,17 @@ namespace SOPD.Controllers
             return View(thesis);
         }
         [PromoterAuth]
-        public ActionResult Propositions()
+        public ActionResult Propositions(int? page)
         {
+            int pageNumber = page ?? 1;
+            int pageSize = 3;
             var id = User.Identity.GetUserId();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var thesis = db.Theses.Where(t => t.State == ThesisState.Proposition && t.PromoterID == id).ToList();
+            var thesis = db.Theses.Where(t => t.State == ThesisState.Proposition && t.PromoterID == id).OrderBy(t=>t.Title).ToPagedList(pageNumber,pageSize);
             if (thesis == null)
             {
                 return HttpNotFound();
@@ -63,15 +67,17 @@ namespace SOPD.Controllers
             return View("Index", thesis);
         }
         [ReviewerAuth]
-        public ActionResult WaitingForReview()
+        public ActionResult WaitingForReview(int? page)
         {
+            int pageNumber = page ?? 1;
+            int pageSize = 3;
             var id = User.Identity.GetUserId();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var thesis = db.Theses.Where(t => t.Reviews.Count == 0 && t.ReviewerID == id).ToList();
+            var thesis = db.Theses.Where(t => t.Reviews.Count == 0 && t.ReviewerID == id).OrderBy(t=>t.Title).ToPagedList(pageNumber,pageSize);
             if (thesis == null)
             {
                 return HttpNotFound();
@@ -224,15 +230,17 @@ namespace SOPD.Controllers
             return RedirectToAction("Index");
         }
         [DeanAuth]
-        public ActionResult UnapprovedTheses()
+        public ActionResult UnapprovedTheses(int? page)
         {
+            int pageNumber = page ?? 1;
+            int pageSize = 3;
             var userId = User.Identity.GetUserId();
             if (userId == null)
             {
                 return RedirectToAction("Login", "Account");
             }
-            var theses = db.Theses.Where(t => t.State == ThesisState.UnApproved);
-            return View("Index", theses.ToList());
+            var theses = db.Theses.Where(t => t.State == ThesisState.UnApproved).OrderBy(t=>t.Title);
+            return View("Index", theses.ToPagedList(pageNumber,pageSize));
         }
         [DeanAuth]
         public ActionResult ApproveThesis(int? id)

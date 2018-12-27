@@ -112,3 +112,7 @@ C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\Rot
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\AngleSharp.xml
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\protobuf-net.pdb
 C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\protobuf-net.xml
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\PagedList.dll
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\PagedList.Mvc.dll
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\PagedList.xml
+C:\Users\Piotrek\Desktop\Nowy\Sem 9\Aplikacje Internetowe\SOPD\SOPD\SOPD\bin\PagedList.Mvc.xml

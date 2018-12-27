@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SOPD.Models.Thesis>
+﻿@model PagedList.IPagedList<SOPD.Models.Thesis>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Tematy prac";
@@ -10,64 +12,68 @@
 <p>
     @if (User.IsInRole("Promotor"))
     {
-        @Html.ActionLink("Stwórz nowy temat", "Create",null,new { @class = "btn btn-primary" })
+        @Html.ActionLink("Stwórz nowy temat", "Create", null, new { @class = "btn btn-primary" })
     }
 
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.AuthorID)
+            @Html.DisplayNameFor(model => model.First().AuthorID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OrganizationalUnitID)
+            @Html.DisplayNameFor(model => model.First().OrganizationalUnitID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PromoterID)
+            @Html.DisplayNameFor(model => model.First().PromoterID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ReviewerID)
+            @Html.DisplayNameFor(model => model.First().ReviewerID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.First().Title)
         </th>
-      
+
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrganizationalUnit.UnitName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Promoter.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Reviewer.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.ActionLink("Szczegóły", "Details", new { id = item.ThesisID },new { @class = "btn btn-info" })
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationalUnit.UnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Promoter.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reviewer.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.ThesisID }, new { @class = "btn btn-info" })
 
-            @if (User.Identity.IsAuthenticated)
-            {
-                if (User.IsInRole("Administrator"))
+                @if (User.Identity.IsAuthenticated)
                 {
-                    @Html.ActionLink("Usuń", "Delete", new { id = item.ThesisID },new { @class = "btn btn-danger" })
+                    if (User.IsInRole("Administrator"))
+                    {
+                        @Html.ActionLink("Usuń", "Delete", new { id = item.ThesisID }, new { @class = "btn btn-danger" })
+                    }
+                    if (User.IsInRole("Dziekan") && item.State == SOPD.Models.ThesisState.UnApproved)
+                    {
+                        @Html.ActionLink("Zatwierdź temat", "ApproveThesis", new { id = item.ThesisID }, new { @class = "btn btn-success" })
+                    }
                 }
-                if (User.IsInRole("Dziekan")&&item.State==SOPD.Models.ThesisState.UnApproved)
-                {
-                    @Html.ActionLink("Zatwierdź temat", "ApproveThesis", new { id = item.ThesisID },new { @class = "btn btn-success" })
-                }
-            }
-        </td>
-    </tr>
-}
+            </td>
+        </tr>
+    }
 
 </table>
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
