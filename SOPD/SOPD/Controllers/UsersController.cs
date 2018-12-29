@@ -236,6 +236,14 @@ namespace SOPD.Controllers
             return users.ToList();
         }
 
+        public static List<User> GetDiplomants(ApplicationDbContext db)
+        {
+            string roleID = db.Roles.First(r => r.Name == "Dyplomant").Id;
+            var users = db.Users.Include(u => u.Roles).Where(u => u.Roles.Any(r => r.RoleId == roleID));
+
+            return users.ToList();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

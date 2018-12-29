@@ -19,11 +19,11 @@
     @Html.HiddenFor(model => model.ThesisID)
     @Html.HiddenFor(model => model.ApprovalDate)
     @Html.HiddenFor(model => model.State)
-    @Html.HiddenFor(model => model.AuthorID)
     @Html.HiddenFor(model => model.PromoterID)
     @if (User.IsInRole("Dyplomant"))
     {
         @Html.HiddenFor(model => model.ReviewerID)
+        @Html.HiddenFor(model => model.AuthorID)
     }
 
     @Html.HiddenFor(model => model.OrganizationalUnitID)
@@ -77,15 +77,22 @@
     </div>
     @if (User.IsInRole("Promotor"))
     {
-         <div class="form-group">
-        @Html.LabelFor(model => model.ReviewerID, "ReviewerID", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("ReviewerID", null, " ", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.AuthorID, "AuthorID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("AuthorID", null, " ", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.AuthorID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReviewerID, "ReviewerID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ReviewerID", null, " ", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ReviewerID, "", new { @class = "text-danger" })
+            </div>
+        </div>
     }
-   
+
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

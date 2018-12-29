@@ -46,6 +46,7 @@ namespace SOPD.Controllers
             ViewBag.CanReview = thesis.Reviews.Count == 0 && thesis.ReviewerID == User.Identity.GetUserId();
             ViewBag.CanApproveProposition = thesis.State == ThesisState.Proposition && thesis.PromoterID == User.Identity.GetUserId();
             ViewBag.isPromoter= thesis.PromoterID == User.Identity.GetUserId();
+            ViewBag.CanEdit = thesis.AuthorID == User.Identity.GetUserId() || thesis.PromoterID == User.Identity.GetUserId();
             return View(thesis);
         }
         [PromoterAuth]
@@ -131,8 +132,9 @@ namespace SOPD.Controllers
                     thesis.State = ThesisState.Proposition;
                     thesis.AuthorID = User.Identity.GetUserId();
                 }
-                else
+                if (User.IsInRole("Promotor"))
                 {
+                    thesis.AuthorID =null;
                     thesis.PromoterID = User.Identity.GetUserId();
                     thesis.State = ThesisState.UnApproved;
                 }
@@ -175,8 +177,9 @@ namespace SOPD.Controllers
                 return HttpNotFound();
             }
             ViewBag.ReviewerID = new SelectList(UsersController.GetReviewers(db), "Id", "FullName", thesis.ReviewerID);
+            ViewBag.AuthorID = new SelectList(UsersController.GetDiplomants(db), "Id", "FullName", thesis.AuthorID);
             bool isPromoter = thesis.PromoterID == User.Identity.GetUserId();
-            bool canEdit = thesis.AuthorID == User.Identity.GetUserId() || thesis.PromoterID == User.Identity.GetUserId();
+            bool canEdit = thesis.AuthorID == User.Identity.GetUserId() || isPromoter;
             if (!canEdit)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -199,6 +202,7 @@ namespace SOPD.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.ReviewerID = new SelectList(UsersController.GetReviewers(db), "Id", "FullName", thesis.ReviewerID);
+            ViewBag.AuthorID = new SelectList(UsersController.GetDiplomants(db), "Id", "FullName", thesis.AuthorID);
             return View(thesis);
         }
 

@@ -120,7 +120,7 @@
         {
             @Html.ActionLink("Dodaj recenzję", "Create", "Reviews", new { thesisId = Model.ThesisID }, new { @class = "btn btn-info" })
         }
-        if (User.IsInRole("Dyplomant") || User.IsInRole("Promotor"))
+        if (ViewBag.CanEdit==true)
         {
             @Html.ActionLink("Edytuj", "Edit", new { id = Model.ThesisID }, new { @class = "btn btn-default" })
 
